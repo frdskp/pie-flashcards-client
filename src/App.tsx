@@ -1,14 +1,25 @@
+import { Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing";
+import Auth from "./pages/Auth";
+import Onboarding from "./pages/Onboarding";
+import Library from "./pages/Library";
+import Set from "./pages/Set";
+import Card from "./pages/Card";
+import Search from "./pages/Search";
+import FlashcardMode from "./pages/FlashcardMode";
+
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200">
-      <div className="card bg-base-100 shadow-xl p-8">
-        <h1 className="text-3xl font-bold text-primary">
-          PIE Flashcards
-        </h1>
-        <p className="mt-2">Tailwind + DaisyUI working ✓</p>
-        <button className="btn btn-primary mt-4">Test Button</button>
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/auth" element={<Auth />} />
+      <Route path="/onboarding" element={<Onboarding />} />
+      <Route path="/library" element={<Library />} />
+      <Route path="/sets/:language" element={<Set />} />
+      <Route path="/roots/:id" element={<Card />} />
+      <Route path="/search" element={<Search />} />
+      <Route path="/study/:language" element={<FlashcardMode />} />
+    </Routes>
   );
 }
 
