@@ -38,7 +38,7 @@ export default function Auth() {
       // Route: new signup → onboarding, existing login → library
       navigate(mode === "signup" ? "/onboarding" : "/library");
     } catch {
-      setError("Could not reach server. Is it running?");
+      setError("Could not reach server");
       setLoading(false);
     }
   }
