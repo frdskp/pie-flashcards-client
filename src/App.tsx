@@ -5,7 +5,6 @@ import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import Library from "./pages/Library";
 import Set from "./pages/Set";
-import Card from "./pages/Card";
 import Search from "./pages/Search";
 import FlashcardMode from "./pages/FlashcardMode";
 
@@ -23,7 +22,6 @@ function App() {
       <Route element={<Layout headerVariant="full" />}>
         <Route path="/library" element={<Library />} />
         <Route path="/sets/:language" element={<Set />} />
-        <Route path="/roots/:id" element={<Card />} />
         <Route path="/search" element={<Search />} />
         <Route path="/study/:language" element={<FlashcardMode />} />
       </Route>
