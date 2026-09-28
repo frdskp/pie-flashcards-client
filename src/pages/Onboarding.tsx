@@ -16,35 +16,35 @@ const LANGUAGES: {
     illustration: "/src/assets/illustration3.svg",
     subtext:
       "Germanic branch of the Indo-European family.",
-    imgClass: "absolute bottom-54 inset-x-0 mx-auto max-h-56 w-auto",
+    imgClass: "absolute bottom-50 inset-x-0 mx-auto max-h-56 w-auto",
   },
   {
     name: "Hindi",
     bg: "bg-mint-50",
     illustration: "/src/assets/illustration4.svg",
     subtext: "Descended from Sanskrit, shares roots with English and Greek.",
-    imgClass: "absolute bottom-48 inset-x-0 mx-auto max-h-64 w-auto",
+    imgClass: "absolute bottom-44 inset-x-0 mx-auto max-h-64 w-auto",
   },
   {
     name: "Thai",
     bg: "bg-gold-50",
     illustration: "/src/assets/illustration5.svg",
     subtext: "Rich with borrowed words from Sanskrit and Pali.",
-    imgClass: "absolute bottom-56 inset-x-0 mx-auto max-h-60 w-auto",
+    imgClass: "absolute bottom-50 inset-x-0 mx-auto max-h-60 w-auto",
   },
   {
     name: "German",
     bg: "bg-tomato-50",
     illustration: "/src/assets/illustration6.svg",
     subtext: "Germanic branch. English's closest major cousin.",
-    imgClass: "absolute bottom-54 inset-x-0 mx-auto max-h-56 w-auto",
+    imgClass: "absolute bottom-48 inset-x-0 mx-auto max-h-56 w-auto",
   },
   {
     name: "Spanish",
     bg: "bg-blue-50",
     illustration: "/src/assets/illustration7.svg",
     subtext: "Romance branch. Descended from Latin.",
-    imgClass: "absolute bottom-54 inset-x-0 mx-auto max-h-56 w-auto",
+    imgClass: "absolute bottom-48 inset-x-0 mx-auto max-h-56 w-auto",
   },
 ];
 
