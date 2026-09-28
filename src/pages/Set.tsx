@@ -92,38 +92,46 @@ export default function Set() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function fetchRoots() {
-      try {
-        const res = await fetch(
-          `http://localhost:4000/roots?language=${language}&curated=true`,
-        );
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        setRoots(data);
-      } catch {
-        setError("Could not load this set.");
-      } finally {
-        setLoading(false);
+  async function fetchRoots() {
+    try {
+      const rootsRes = await fetch(`http://localhost:4000/roots?language=${language}`);
+      if (!rootsRes.ok) throw new Error("Failed to load");
+      const allRoots: Root[] = await rootsRes.json();
+
+      const token = localStorage.getItem("token");
+      let savedIds: Set<string> = new globalThis.Set<string>();
+      if (token) {
+        const userRes = await fetch("http://localhost:4000/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (userRes.ok) {
+          const user = await userRes.json();
+          console.log("USER SAVED ROOTS:", user.savedRoots);
+          console.log("CURRENT LANGUAGE:", language);
+          savedIds = new globalThis.Set(
+            user.savedRoots
+              .filter((sr: { language: string }) => sr.language === language)
+              .map((sr: { root: string | { _id: string } }) =>
+                typeof sr.root === "string" ? sr.root : sr.root._id
+              )
+          );
+          console.log("SAVED IDS FOR THIS LANGUAGE:", [...savedIds]);
+        }
       }
+
+      const filtered = allRoots.filter(
+        (r) => r.isCurated || savedIds.has(r._id)
+      );
+      console.log("FILTERED ROOTS COUNT:", filtered.length);
+      setRoots(filtered);
+    } catch {
+      setError("Could not load this set.");
+    } finally {
+      setLoading(false);
     }
-    fetchRoots();
-  }, [language]);
-
-  if (loading) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <p className="text-body-md text-ink-50">Loading...</p>
-      </div>
-    );
   }
-
-  if (error) {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <p className="text-body-md text-tomato-100">{error}</p>
-      </div>
-    );
-  }
+  fetchRoots();
+}, [language]);
 
   return (
     <div className="flex-1 flex flex-col pb-4">

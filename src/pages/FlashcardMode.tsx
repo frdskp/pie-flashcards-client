@@ -105,20 +105,40 @@ export default function FlashcardMode() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchRoots() {
-      try {
-        const res = await fetch(`http://localhost:4000/roots?language=${language}&curated=true`);
-        if (!res.ok) throw new Error("Failed to load");
-        const data = await res.json();
-        setRoots(data.sort(() => Math.random() - 0.5));
-      } catch {
-        setError("Could not load flashcards.");
-      } finally {
-        setLoading(false);
+  async function fetchRoots() {
+    try {
+      const rootsRes = await fetch(`http://localhost:4000/roots?language=${language}`);
+      if (!rootsRes.ok) throw new Error("Failed to load");
+      const allRoots: Root[] = await rootsRes.json();
+
+      const token = localStorage.getItem("token");
+      let savedIds: Set<string> = new globalThis.Set<string>();
+      if (token) {
+        const userRes = await fetch("http://localhost:4000/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (userRes.ok) {
+          const user = await userRes.json();
+          savedIds = new globalThis.Set(
+            user.savedRoots
+              .filter((sr: { language: string }) => sr.language === language)
+              .map((sr: { root: string | { _id: string } }) =>
+                typeof sr.root === "string" ? sr.root : sr.root._id
+              )
+          );
+        }
       }
+
+      const inSet = allRoots.filter((r) => r.isCurated || savedIds.has(r._id));
+      setRoots(inSet.sort(() => Math.random() - 0.5));
+    } catch {
+      setError("Could not load flashcards.");
+    } finally {
+      setLoading(false);
     }
-    fetchRoots();
-  }, [language]);
+  }
+  fetchRoots();
+}, [language]);
 
   function handleAnswer(correct: boolean) {
     if (sliding) return;
@@ -226,7 +246,7 @@ export default function FlashcardMode() {
       <div
         key={i}
         className={`h-1.5 flex-1 rounded-full transition-colors ${
-          i <= currentIndex ? "bg-ink-100" : "bg-ink-10"
+          i < currentIndex ? "bg-ink-100" : "bg-ink-10"
         }`}
       />
     ))}
