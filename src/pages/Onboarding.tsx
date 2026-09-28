@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 type Language = "English" | "Hindi" | "Thai" | "German" | "Spanish";
@@ -14,8 +14,7 @@ const LANGUAGES: {
     name: "English",
     bg: "bg-lavender-50",
     illustration: "/src/assets/illustration3.svg",
-    subtext:
-      "Germanic branch of the Indo-European family.",
+    subtext: "Germanic branch of the Indo-European family.",
     imgClass: "absolute bottom-50 inset-x-0 mx-auto max-h-56 w-auto",
   },
   {
@@ -52,6 +51,21 @@ export default function Onboarding() {
   const [selected, setSelected] = useState<Language[]>([]);
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
+  const [existingLanguages, setExistingLanguages] = useState<Language[]>([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    fetch("http://localhost:4000/users/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((user) => {
+        if (user?.spokenLanguages) {
+          setExistingLanguages(user.spokenLanguages);
+        }
+      });
+  }, []);
 
   function toggle(lang: Language) {
     setSelected((prev) =>
@@ -60,20 +74,24 @@ export default function Onboarding() {
   }
 
   async function handleContinue() {
-    if (selected.length === 0) {
+    if (selected.length === 0 && existingLanguages.length === 0) {
       navigate("/library");
       return;
     }
     setSaving(true);
     const token = localStorage.getItem("token");
     try {
+      // Merge existing + new picks
+      const merged = Array.from(
+        new globalThis.Set([...existingLanguages, ...selected]),
+      );
       await fetch("http://localhost:4000/users/me/languages", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ languages: selected }),
+        body: JSON.stringify({ languages: merged }),
       });
       navigate("/library");
     } catch {
@@ -112,36 +130,36 @@ export default function Onboarding() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 flex-1 [@media(min-width:1240px)]:grid-cols-5">
           {LANGUAGES.map((lang) => {
             const isSelected = selected.includes(lang.name);
+            const isAlreadyAdded = existingLanguages.includes(lang.name);
             return (
               <div
                 key={lang.name}
-                className={`${lang.bg} rounded-3xl overflow-hidden flex flex-col relative min-h-[420px]`}
+                className={`${lang.bg} rounded-3xl overflow-hidden flex flex-col relative min-h-[420px]"
+                }`}
               >
-                {/* Illustration — absolutely positioned, can go behind text card */}
-                <img
-                  src={lang.illustration}
-                  alt=""
-                  className={`absolute ${lang.imgClass}`}
-                />
-
-                {/* Spacer to push text card to bottom */}
+                <img src={lang.illustration} alt="" className={lang.imgClass} />
                 <div className="flex-1" />
-
-                {/* White inner card — sits on top */}
                 <div className="relative z-10 bg-white m-3 rounded-2xl p-4 flex flex-col gap-3">
                   <h2 className="text-h4 text-center">{lang.name}</h2>
                   <p className="text-body-sm text-center text-ink-80">
                     {lang.subtext}
                   </p>
                   <button
-                    onClick={() => toggle(lang.name)}
+                    onClick={() => !isAlreadyAdded && toggle(lang.name)}
+                    disabled={isAlreadyAdded}
                     className={`btn rounded-full h-10 min-h-10 border-0 ${
-                      isSelected
-                        ? "bg-white text-ink-100 border-2 border-ink-100"
-                        : "bg-ink-100 text-white hover:bg-ink-80"
+                      isAlreadyAdded
+                        ? "bg-ink-5 text-ink-50 cursor-default"
+                        : isSelected
+                          ? "bg-white text-ink-100 border-2 border-ink-100"
+                          : "bg-ink-100 text-white hover:bg-ink-80"
                     }`}
                   >
-                    {isSelected ? "✓ Added" : "Add to my library"}
+                    {isAlreadyAdded
+                      ? "In your library"
+                      : isSelected
+                        ? "✓ Added"
+                        : "Add to my library"}
                   </button>
                 </div>
               </div>
