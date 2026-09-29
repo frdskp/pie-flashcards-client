@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
 type HeaderProps = {
@@ -10,6 +10,7 @@ export default function Header({ variant = "full" }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const userJson = localStorage.getItem("user");
@@ -18,10 +19,12 @@ export default function Header({ variant = "full" }: HeaderProps) {
         const user = JSON.parse(userJson);
         if (user.email) {
           setInitial(user.email.charAt(0).toUpperCase());
+          return;
         }
       } catch {}
     }
-  }, []);
+    setInitial("");
+  }, [location.pathname]);
 
   // Close menu on outside click
   useEffect(() => {
