@@ -8,9 +8,9 @@ export default function Footer() {
         rel="noopener noreferrer"
         className="underline hover:text-ink-100"
       >
-        Wiktionary
+        Wiktionary.
       </a>
-      {" "}(CC BY-SA 4.0). © {new Date().getFullYear()} PIE.
+      {" "} © {new Date().getFullYear()} PIE.
     </footer>
   );
 }

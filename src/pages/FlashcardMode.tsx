@@ -52,14 +52,20 @@ function CardFace({
         }`}
       >
         {/* Front */}
-        <div className={`absolute inset-0 ${bg} rounded-3xl p-6 [backface-visibility:hidden]`}>
+        <div
+          className={`absolute inset-0 ${bg} rounded-3xl p-6 [backface-visibility:hidden]`}
+        >
           <div className="bg-white rounded-2xl w-full h-full flex flex-col items-center justify-center text-center p-6">
             <h2 className="text-h3">{root.root}</h2>
-            <p className="text-body-md text-ink-80 mt-6">"{root.reconstructedMeaning}"</p>
+            <p className="text-body-md text-ink-80 mt-6">
+              "{root.reconstructedMeaning}"
+            </p>
           </div>
         </div>
         {/* Back */}
-        <div className={`absolute inset-0 ${bg} rounded-3xl p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]`}>
+        <div
+          className={`absolute inset-0 ${bg} rounded-3xl p-6 [backface-visibility:hidden] [transform:rotateY(180deg)]`}
+        >
           <div className="bg-white rounded-2xl w-full h-full flex flex-col items-center justify-center text-center p-6">
             {cognate ? (
               <>
@@ -69,14 +75,16 @@ function CardFace({
                     cognate.relationship === "inherited"
                       ? "bg-ink-10"
                       : cognate.relationship === "borrowed"
-                      ? "bg-ink-10"
-                      : "bg-ink-10"
+                        ? "bg-ink-10"
+                        : "bg-ink-10"
                   }`}
                 >
                   {cognate.relationship}
                 </span>
                 {cognate.note && (
-                  <p className="text-body-sm text-ink-80 mt-3">{cognate.note}</p>
+                  <p className="text-body-sm text-ink-80 mt-3">
+                    {cognate.note}
+                  </p>
                 )}
               </>
             ) : (
@@ -105,40 +113,44 @@ export default function FlashcardMode() {
   const navigate = useNavigate();
 
   useEffect(() => {
-  async function fetchRoots() {
-    try {
-      const rootsRes = await fetch(`http://localhost:4000/roots?language=${language}`);
-      if (!rootsRes.ok) throw new Error("Failed to load");
-      const allRoots: Root[] = await rootsRes.json();
+    async function fetchRoots() {
+      try {
+        const rootsRes = await fetch(
+          `https://pie-flashcards-server.onrender.com/roots?language=${language}`,
+        );
+        if (!rootsRes.ok) throw new Error("Failed to load");
+        const allRoots: Root[] = await rootsRes.json();
 
-      const token = localStorage.getItem("token");
-      let savedIds: Set<string> = new globalThis.Set<string>();
-      if (token) {
-        const userRes = await fetch("http://localhost:4000/users/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (userRes.ok) {
-          const user = await userRes.json();
-          savedIds = new globalThis.Set(
-            user.savedRoots
-              .filter((sr: { language: string }) => sr.language === language)
-              .map((sr: { root: string | { _id: string } }) =>
-                typeof sr.root === "string" ? sr.root : sr.root._id
-              )
-          );
+        const token = localStorage.getItem("token");
+        let savedIds: Set<string> = new globalThis.Set<string>();
+        if (token) {
+          const userRes = await fetch("https://pie-flashcards-server.onrender.com/users/me", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (userRes.ok) {
+            const user = await userRes.json();
+            savedIds = new globalThis.Set(
+              user.savedRoots
+                .filter((sr: { language: string }) => sr.language === language)
+                .map((sr: { root: string | { _id: string } }) =>
+                  typeof sr.root === "string" ? sr.root : sr.root._id,
+                ),
+            );
+          }
         }
-      }
 
-      const inSet = allRoots.filter((r) => r.isCurated || savedIds.has(r._id));
-      setRoots(inSet.sort(() => Math.random() - 0.5));
-    } catch {
-      setError("Could not load flashcards.");
-    } finally {
-      setLoading(false);
+        const inSet = allRoots.filter(
+          (r) => r.isCurated || savedIds.has(r._id),
+        );
+        setRoots(inSet.sort(() => Math.random() - 0.5));
+      } catch {
+        setError("Could not load flashcards.");
+      } finally {
+        setLoading(false);
+      }
     }
-  }
-  fetchRoots();
-}, [language]);
+    fetchRoots();
+  }, [language]);
 
   function handleAnswer(correct: boolean) {
     if (sliding) return;
@@ -177,8 +189,13 @@ export default function FlashcardMode() {
   if (error || roots.length === 0) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center gap-4">
-        <p className="text-body-md text-tomato-100">{error || "No cards for this set."}</p>
-        <Link to="/library" className="btn bg-ink-100 text-white rounded-full h-10 min-h-10 px-8 border-0 hover:bg-ink-80">
+        <p className="text-body-md text-tomato-100">
+          {error || "No cards for this set."}
+        </p>
+        <Link
+          to="/library"
+          className="btn bg-ink-100 text-white rounded-full h-10 min-h-10 px-8 border-0 hover:bg-ink-80"
+        >
           Back to library
         </Link>
       </div>
@@ -186,46 +203,50 @@ export default function FlashcardMode() {
   }
 
   if (complete) {
-  return (
-    <div className="flex-1 flex flex-col pb-4">
-      <div className="flex-1 w-full mx-auto bg-ink-5 rounded-3xl p-8 md:p-16 flex flex-col items-center justify-center text-center gap-6">
-        <img src="/src/assets/illustration2.svg" alt="" className="max-h-64" />
-        <div className="flex flex-col gap-2">
-          <h2 className="text-h2 pb-12">Congratulations!</h2>
-          <p className="text-body-md text-ink-80">Here's your stats:</p>
-        </div>
-        <div className="flex gap-16 pb-8">
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-2xl bg-tomato-100 text-white flex items-center justify-center text-h4">
-              ✕
-            </div>
-            <p className="text-h4 text-tomato-100">{didntKnow}</p>
+    return (
+      <div className="flex-1 flex flex-col pb-4">
+        <div className="flex-1 w-full mx-auto bg-ink-5 rounded-3xl p-8 md:p-16 flex flex-col items-center justify-center text-center gap-6">
+          <img
+            src="/src/assets/illustration2.svg"
+            alt=""
+            className="max-h-64"
+          />
+          <div className="flex flex-col gap-2">
+            <h2 className="text-h2 pb-12">Congratulations!</h2>
+            <p className="text-body-md text-ink-80">Here's your stats:</p>
           </div>
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-12 h-12 rounded-2xl bg-mint-100 text-white flex items-center justify-center text-h4">
-              ✓
+          <div className="flex gap-8 pb-8">
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 rounded-2xl bg-tomato-100 text-white flex items-center justify-center text-h4">
+                ✕
+              </div>
+              <p className="text-h4 text-tomato-100">{didntKnow}</p>
             </div>
-            <p className="text-h4 text-mint-100">{knew}</p>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 rounded-2xl bg-mint-100 text-white flex items-center justify-center text-h4">
+                ✓
+              </div>
+              <p className="text-h4 text-mint-100">{knew}</p>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-3 w-full max-w-md">
-          <button
-            onClick={restart}
-            className="btn bg-ink-100 text-white rounded-full border-0 hover:bg-ink-80 w-full"
-          >
-            Study again
-          </button>
-          <Link
-            to="/library"
-            className="btn bg-white text-ink-100 rounded-full border-ink-100 border hover:bg-ink-5 w-full"
-          >
-            Back to library
-          </Link>
+          <div className="flex flex-col gap-3 w-full max-w-md">
+            <button
+              onClick={restart}
+              className="btn bg-ink-100 text-white rounded-full border-0 hover:bg-ink-80 w-full"
+            >
+              Study again
+            </button>
+            <Link
+              to="/library"
+              className="btn bg-white text-ink-100 rounded-full border-ink-100 border hover:bg-ink-5 w-full"
+            >
+              Back to library
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   const currentRoot = roots[currentIndex];
   const cognate = currentRoot.cognates.find((c) => c.language === language);
@@ -237,32 +258,51 @@ export default function FlashcardMode() {
   return (
     <div className="flex-1 flex flex-col pb-4">
       <div className="flex-1 w-full mx-auto flex flex-col">
-
         {/* Top bar */}
-        <div className="grid grid-cols-5 items-center gap-6 mb-8 mt-16">
-  <h2 className="text-h4 col-span-1">{language}</h2>
-  <div className="col-span-3 flex gap-1 items-center">
-    {roots.map((_, i) => (
-      <div
-        key={i}
-        className={`h-1.5 flex-1 rounded-full transition-colors ${
-          i < currentIndex ? "bg-ink-100" : "bg-ink-10"
-        }`}
-      />
-    ))}
-  </div>
-  <button
-  onClick={() => navigate(-1)}
-  className="col-span-1 text-h6 text-ink-50 hover:text-ink-100 text-right whitespace-nowrap"
->
-  Exit flashcard mode
-</button>
-</div>
+        <div className="mb-8 mt-16">
+          {/* Row 1 on mobile / left+right on desktop */}
+          <div className="flex items-center justify-between mb-4 md:mb-0 md:grid md:grid-cols-5 md:gap-6">
+            <h2 className="text-h2 md:col-span-1">{language}</h2>
+
+            {/* Progress bar — hidden on mobile (shown below), visible on desktop */}
+            <div className="hidden md:flex md:col-span-3 gap-1 items-center">
+              {roots.map((_, i) => (
+                <div
+                  key={i}
+                  className={`h-1.5 flex-1 rounded-full transition-colors ${
+                    i < currentIndex ? "bg-ink-100" : "bg-ink-10"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => navigate(-1)}
+              className="text-h6 text-ink-50 hover:text-ink-100 whitespace-nowrap md:col-span-1 md:text-right"
+            >
+              Exit flashcard mode
+            </button>
+          </div>
+
+          {/* Progress bar — mobile only, on its own line */}
+          <div className="flex md:hidden gap-1 items-center pt-8">
+            {roots.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1.5 flex-1 rounded-full transition-colors ${
+                  i < currentIndex ? "bg-ink-100" : "bg-ink-10"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
 
         {/* Cards — outgoing slides left, incoming slides in from right */}
         <div className="flex-1 flex items-center justify-center relative overflow-hidden">
-          <div className="relative aspect-[5/6] max-h-[500px] w-full" style={{ maxWidth: "400px" }}>
-
+          <div
+            className="relative aspect-[5/6] max-h-[500px] w-full"
+            style={{ maxWidth: "400px" }}
+          >
             {/* Outgoing card (only during slide) */}
             {sliding && (
               <div className="absolute inset-0 animate-slide-out-left pointer-events-none">
@@ -278,7 +318,10 @@ export default function FlashcardMode() {
 
             {/* Incoming / current card */}
             {sliding && nextRoot ? (
-              <div key={`incoming-${currentIndex + 1}`} className="absolute inset-0 animate-slide-in-right">
+              <div
+                key={`incoming-${currentIndex + 1}`}
+                className="absolute inset-0 animate-slide-in-right"
+              >
                 <CardFace
                   root={nextRoot}
                   cognate={nextCognate}
@@ -299,7 +342,6 @@ export default function FlashcardMode() {
                 />
               </div>
             ) : null}
-
           </div>
         </div>
 
@@ -326,7 +368,6 @@ export default function FlashcardMode() {
             <p className="text-body-sm text-mint-100">{knew}</p>
           </div>
         </div>
-
       </div>
     </div>
   );

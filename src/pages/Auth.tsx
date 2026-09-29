@@ -17,7 +17,7 @@ export default function Auth() {
     setLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:4000/auth/${mode === "signup" ? "register" : "login"}`, {
+      const res = await fetch(`https://pie-flashcards-server.onrender.com/auth/${mode === "signup" ? "register" : "login"}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

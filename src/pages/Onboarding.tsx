@@ -56,7 +56,7 @@ export default function Onboarding() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    fetch("http://localhost:4000/users/me", {
+    fetch("https://pie-flashcards-server.onrender.com/users/me", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => (res.ok ? res.json() : null))
@@ -85,7 +85,7 @@ export default function Onboarding() {
       const merged = Array.from(
         new globalThis.Set([...existingLanguages, ...selected]),
       );
-      await fetch("http://localhost:4000/users/me/languages", {
+      await fetch("https://pie-flashcards-server.onrender.com/users/me/languages", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -107,35 +107,33 @@ export default function Onboarding() {
     <div className="flex-1 flex flex-col pb-4">
       <div className="flex-1 w-full mx-auto flex flex-col">
         {/* Title bar */}
-        <div className="flex items-center justify-between mb-6 md:mb-8 min-h-45">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 mt-12">
           <h1 className="text-h2 md:text-h1">Pick your languages</h1>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <button
               onClick={handleSkip}
-              className="text-h5 text-ink-50 hover:text-ink-80"
+              className="text-body-lg md:text-h6 text-ink-50 hover:text-ink-100"
             >
               Skip
             </button>
             <button
               onClick={handleContinue}
-              disabled={saving}
-              className="text-h5 text-ink-100 hover:text-ink-80 disabled:opacity-50"
+              className="text-body-lg md:text-h6 text-ink-100 hover:text-ink-80"
             >
-              {saving ? "..." : "Continue"}
+              Continue
             </button>
           </div>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 flex-1 [@media(min-width:1240px)]:grid-cols-5">
+        {/* Cards — horizontal swipe on mobile, grid on desktop */}
+        <div className="flex md:grid md:grid-cols-2 h-[64vh] [@media(min-width:1240px)]:grid-cols-5 gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none -mx-4 md:mx-0 px-4 md:px-0">
           {LANGUAGES.map((lang) => {
             const isSelected = selected.includes(lang.name);
             const isAlreadyAdded = existingLanguages.includes(lang.name);
             return (
               <div
                 key={lang.name}
-                className={`${lang.bg} rounded-3xl overflow-hidden flex flex-col relative min-h-[420px]"
-                }`}
+                className={`${lang.bg} rounded-3xl overflow-hidden flex flex-col relative snap-center shrink-0 w-[85vw] md:w-auto md:shrink md:min-h-[420px]`}
               >
                 <img src={lang.illustration} alt="" className={lang.imgClass} />
                 <div className="flex-1" />

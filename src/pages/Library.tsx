@@ -15,31 +15,31 @@ const LANGUAGE_META: Record<Language, LangMeta> = {
     bg: "bg-lavender-50",
     illustration: "/src/assets/illustration3.svg",
     subtext: "Over 1 billion speakers. Germanic branch of the Indo-European family.",
-    imgClass: "absolute bottom-32 -left-4 max-h-56",
+    imgClass: "absolute bottom-50 left-1/2 -translate-x-1/2 max-h-84",
   },
   Hindi: {
     bg: "bg-mint-50",
     illustration: "/src/assets/illustration4.svg",
     subtext: "Indo-Aryan branch. Descended from Sanskrit, shares roots with English and Greek.",
-    imgClass: "absolute bottom-24 left-1/2 -translate-x-1/2 max-h-120",
+    imgClass: "absolute bottom-36 left-1/2 -translate-x-1/2 max-h-64",
   },
   Thai: {
     bg: "bg-gold-50",
     illustration: "/src/assets/illustration5.svg",
-    subtext: "Not Indo-European — but rich with borrowed words from Sanskrit and Pali.",
-    imgClass: "absolute bottom-48 left-1/2 -translate-x-1/2 max-h-56",
+    subtext: "Not Indo-European but rich with borrowed words from Sanskrit and Pali.",
+    imgClass: "absolute bottom-50 left-1/2 -translate-x-1/2 max-h-64",
   },
   German: {
     bg: "bg-tomato-50",
     illustration: "/src/assets/illustration6.svg",
     subtext: "Germanic branch. English's closest major cousin.",
-    imgClass: "absolute bottom-48 left-1/2 -translate-x-1/2 max-h-40",
+    imgClass: "absolute bottom-40 left-1/2 -translate-x-1/2 max-h-56",
   },
   Spanish: {
     bg: "bg-blue-50",
     illustration: "/src/assets/illustration7.svg",
     subtext: "Romance branch. Descended from Latin.",
-    imgClass: "absolute bottom-32 left-1/2 -translate-x-1/2 max-h-64",
+    imgClass: "absolute bottom-40 left-1/2 -translate-x-1/2 max-h-56",
   },
 };
 
@@ -64,7 +64,7 @@ export default function Library() {
 
     async function fetchUser() {
       try {
-        const res = await fetch("http://localhost:4000/users/me", {
+        const res = await fetch("https://pie-flashcards-server.onrender.com/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {
@@ -128,8 +128,8 @@ export default function Library() {
 }
 
   return (
-    <div className="flex-1 flex flex-col pb-4 pt-16">
-      <div className="flex-1 w-full mx-auto flex flex-col">
+    <div className=" pb-4 pt-16">
+      <div className=" w-full mx-auto flex flex-col">
 
         {/* Card grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 flex-1 [@media(min-width:1240px)]:grid-cols-3">

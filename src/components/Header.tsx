@@ -19,9 +19,7 @@ export default function Header({ variant = "full" }: HeaderProps) {
         if (user.email) {
           setInitial(user.email.charAt(0).toUpperCase());
         }
-      } catch {
-        // ignore
-      }
+      } catch {}
     }
   }, []);
 
@@ -51,7 +49,7 @@ export default function Header({ variant = "full" }: HeaderProps) {
 
   async function handleDeleteAccount() {
     const confirmed = window.confirm(
-      "Delete your account permanently? This cannot be undone."
+      "Delete your account permanently? This cannot be undone.",
     );
     if (!confirmed) return;
 
@@ -59,7 +57,7 @@ export default function Header({ variant = "full" }: HeaderProps) {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:4000/users/me", {
+      const res = await fetch("https://pie-flashcards-server.onrender.com/users/me", {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -74,22 +72,22 @@ export default function Header({ variant = "full" }: HeaderProps) {
 
   return (
     <header className="flex items-center justify-between px-6 py-4">
-       {initial ? (
-  <div className="flex items-center">
-    <img src="/src/assets/PIE.svg" alt="PIE" className="h-6" />
-  </div>
-) : (
-  <Link to="/" className="flex items-center">
-    <img src="/src/assets/PIE.svg" alt="PIE" className="h-6" />
-  </Link>
-)}
+      {initial ? (
+        <div className="flex items-center">
+          <img src="/src/assets/PIE.svg" alt="PIE" className="h-6" />
+        </div>
+      ) : (
+        <Link to="/" className="flex items-center">
+          <img src="/src/assets/PIE.svg" alt="PIE" className="h-6" />
+        </Link>
+      )}
 
       {variant === "full" && (
         <nav className="flex gap-6">
           <NavLink
             to="/library"
             className={({ isActive }) =>
-              `text-h4 ${isActive ? "underline underline-offset-4" : "text-ink-50"}`
+              `text-h4 ${isActive ? "underline underline-offset-4" : "text-ink-80"}`
             }
           >
             Library
@@ -97,7 +95,7 @@ export default function Header({ variant = "full" }: HeaderProps) {
           <NavLink
             to="/search"
             className={({ isActive }) =>
-              `text-h4 ${isActive ? "underline underline-offset-4" : "text-ink-50"}`
+              `text-h4 ${isActive ? "underline underline-offset-4" : "text-ink-80"}`
             }
           >
             Search
@@ -109,7 +107,7 @@ export default function Header({ variant = "full" }: HeaderProps) {
         <div ref={menuRef} className="relative">
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            className="w-10 h-10 rounded-full bg-ink-100 text-white flex items-center justify-center text-h4 hover:bg-ink-80"
+            className="w-10 h-10 rounded-full bg-ink-100 text-white flex items-center justify-center text-h6 hover:bg-ink-80"
           >
             {initial || "?"}
           </button>

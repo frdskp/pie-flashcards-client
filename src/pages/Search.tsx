@@ -156,13 +156,13 @@ export default function Search() {
   useEffect(() => {
     async function fetchAll() {
       try {
-        const rootsRes = await fetch("http://localhost:4000/roots");
+        const rootsRes = await fetch("https://pie-flashcards-server.onrender.com/roots");
         const rootsData = await rootsRes.json();
         setRoots(rootsData);
 
         const token = localStorage.getItem("token");
         if (token) {
-          const userRes = await fetch("http://localhost:4000/users/me", {
+          const userRes = await fetch("https://pie-flashcards-server.onrender.com/users/me", {
             headers: { Authorization: `Bearer ${token}` },
           });
           if (userRes.ok) {
@@ -194,7 +194,7 @@ export default function Search() {
     try {
       await Promise.all(
         user.spokenLanguages.map((lang) =>
-          fetch(`http://localhost:4000/users/me/save/${rootId}`, {
+          fetch(`https://pie-flashcards-server.onrender.com/users/me/save/${rootId}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

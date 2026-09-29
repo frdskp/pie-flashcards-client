@@ -40,7 +40,7 @@ export default function Card() {
   useEffect(() => {
     async function fetchRoot() {
       try {
-        const res = await fetch(`http://localhost:4000/roots/${id}`);
+        const res = await fetch(`https://pie-flashcards-server.onrender.com/roots/${id}`);
         if (!res.ok) throw new Error("Root not found");
         const data = await res.json();
         setRoot(data);

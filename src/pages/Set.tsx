@@ -94,14 +94,14 @@ export default function Set() {
   useEffect(() => {
   async function fetchRoots() {
     try {
-      const rootsRes = await fetch(`http://localhost:4000/roots?language=${language}`);
+      const rootsRes = await fetch(`https://pie-flashcards-server.onrender.com/roots?language=${language}`);
       if (!rootsRes.ok) throw new Error("Failed to load");
       const allRoots: Root[] = await rootsRes.json();
 
       const token = localStorage.getItem("token");
       let savedIds: Set<string> = new globalThis.Set<string>();
       if (token) {
-        const userRes = await fetch("http://localhost:4000/users/me", {
+        const userRes = await fetch("https://pie-flashcards-server.onrender.com/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (userRes.ok) {
