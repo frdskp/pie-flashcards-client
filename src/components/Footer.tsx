@@ -8,7 +8,7 @@ export default function Footer() {
         rel="noopener noreferrer"
         className="underline hover:text-ink-100"
       >
-        Wiktionary.
+        Wikitionary.
       </a>
       {" "} © {new Date().getFullYear()} PIE.
     </footer>
