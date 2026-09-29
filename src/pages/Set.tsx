@@ -88,8 +88,8 @@ export default function Set() {
   const { language } = useParams<{ language: Language }>();
   const navigate = useNavigate();
   const [roots, setRoots] = useState<Root[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [_loading, setLoading] = useState(true);
+  const [_error, setError] = useState("");
 
   useEffect(() => {
   async function fetchRoots() {

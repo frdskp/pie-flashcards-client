@@ -49,7 +49,7 @@ const LANGUAGES: {
 
 export default function Onboarding() {
   const [selected, setSelected] = useState<Language[]>([]);
-  const [saving, setSaving] = useState(false);
+  const [_saving, setSaving] = useState(false);
   const navigate = useNavigate();
   const [existingLanguages, setExistingLanguages] = useState<Language[]>([]);
 
