@@ -49,7 +49,7 @@ export default function Auth() {
 
         {/* Illustration */}
         <img
-          src="/src/assets/illustration8.svg"
+          src="/assets/illustration8.svg"
           alt=""
           className="w-48 md:w-64 mb-8"
         />

@@ -7,7 +7,7 @@ export default function Landing() {
         {/* Desktop grid */}
         <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-6 items-center">
           <img
-            src="/src/assets/illustration4.svg"
+            src="/assets/illustration4.svg"
             alt=""
             className="w-full max-w-[280px] justify-self-start"
           />
@@ -28,17 +28,17 @@ export default function Landing() {
             </Link>
           </div>
           <img
-            src="/src/assets/illustration5.svg"
+            src="/assets/illustration5.svg"
             alt=""
             className="w-full max-w-[200px] justify-self-end"
           />
           <img
-            src="/src/assets/illustration6.svg"
+            src="/assets/illustration6.svg"
             alt=""
             className="w-full max-w-[280px] justify-self-start"
           />
           <img
-            src="/src/assets/illustration7.svg"
+            src="/assets/illustration7.svg"
             alt=""
             className="w-full max-w-[200px] justify-self-end"
           />
@@ -47,7 +47,7 @@ export default function Landing() {
         {/* Mobile stacked */}
         <div className="md:hidden flex flex-col items-center text-center">
           <img
-            src="/src/assets/illustration4.svg"
+            src="/assets/illustration4.svg"
             alt=""
             className="w-48 mb-8"
           />
@@ -61,7 +61,7 @@ export default function Landing() {
           >
             Get started
           </Link>
-          <img src="/src/assets/illustration6.svg" alt="" className="w-48" />
+          <img src="/assets/illustration6.svg" alt="" className="w-48" />
         </div>
       </div>
     </div>

@@ -13,31 +13,31 @@ type LangMeta = {
 const LANGUAGE_META: Record<Language, LangMeta> = {
   English: {
     bg: "bg-lavender-50",
-    illustration: "/src/assets/illustration3.svg",
+    illustration: "/assets/illustration3.svg",
     subtext: "Over 1 billion speakers. Germanic branch of the Indo-European family.",
     imgClass: "absolute bottom-50 left-1/2 -translate-x-1/2 max-h-84",
   },
   Hindi: {
     bg: "bg-mint-50",
-    illustration: "/src/assets/illustration4.svg",
+    illustration: "/assets/illustration4.svg",
     subtext: "Indo-Aryan branch. Descended from Sanskrit, shares roots with English and Greek.",
     imgClass: "absolute bottom-36 left-1/2 -translate-x-1/2 max-h-64",
   },
   Thai: {
     bg: "bg-gold-50",
-    illustration: "/src/assets/illustration5.svg",
+    illustration: "/assets/illustration5.svg",
     subtext: "Not Indo-European but rich with borrowed words from Sanskrit and Pali.",
     imgClass: "absolute bottom-50 left-1/2 -translate-x-1/2 max-h-64",
   },
   German: {
     bg: "bg-tomato-50",
-    illustration: "/src/assets/illustration6.svg",
+    illustration: "/assets/illustration6.svg",
     subtext: "Germanic branch. English's closest major cousin.",
     imgClass: "absolute bottom-40 left-1/2 -translate-x-1/2 max-h-56",
   },
   Spanish: {
     bg: "bg-blue-50",
-    illustration: "/src/assets/illustration7.svg",
+    illustration: "/assets/illustration7.svg",
     subtext: "Romance branch. Descended from Latin.",
     imgClass: "absolute bottom-40 left-1/2 -translate-x-1/2 max-h-56",
   },
@@ -107,7 +107,7 @@ export default function Library() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center gap-12 px-6 text-center">
       <img
-        src="/src/assets/illustration1.svg"
+        src="/assets/illustration1.svg"
         alt=""
         className="max-h-80"
       />

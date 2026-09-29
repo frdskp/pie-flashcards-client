@@ -265,7 +265,7 @@ export default function Search() {
         ) : !q ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center">
             <img
-              src="/src/assets/illustration1.svg"
+              src="/assets/illustration1.svg"
               alt=""
               className="max-h-120"
             />
@@ -273,7 +273,7 @@ export default function Search() {
         ) : filtered.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center">
             <img
-              src="/src/assets/illustration1.svg"
+              src="/assets/illustration1.svg"
               alt=""
               className="max-h-120"
             />

@@ -74,11 +74,11 @@ export default function Header({ variant = "full" }: HeaderProps) {
     <header className="flex items-center justify-between px-6 py-4">
       {initial ? (
         <div className="flex items-center">
-          <img src="/src/assets/PIE.svg" alt="PIE" className="h-6" />
+          <img src="/assets/PIE.svg" alt="PIE" className="h-6" />
         </div>
       ) : (
         <Link to="/" className="flex items-center">
-          <img src="/src/assets/PIE.svg" alt="PIE" className="h-6" />
+          <img src="/assets/PIE.svg" alt="PIE" className="h-6" />
         </Link>
       )}
 

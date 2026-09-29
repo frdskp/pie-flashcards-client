@@ -207,7 +207,7 @@ export default function FlashcardMode() {
       <div className="flex-1 flex flex-col pb-4">
         <div className="flex-1 w-full mx-auto bg-ink-5 rounded-3xl p-8 md:p-16 flex flex-col items-center justify-center text-center gap-6">
           <img
-            src="/src/assets/illustration2.svg"
+            src="/assets/illustration2.svg"
             alt=""
             className="max-h-64"
           />
